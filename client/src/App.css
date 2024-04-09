@@ -1,0 +1,48 @@
+/* App.css */
+.App {
+  text-align: center;
+}
+
+.card {
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+}
+
+.card.selected {
+  border: 2px solid blue;
+  background-color: #f0f0f0;
+}
+
+.job-cards {
+  display: flex;
+  justify-content: space-around;
+}
+
+.error {
+  color: red;
+}
+
+
+.character-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.character-table th, .character-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.character-table th {
+  background-color: #f2f2f2;
+}
+
+.character-table tr:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
