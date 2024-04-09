@@ -1,88 +1,109 @@
 /* BattleModal.css */
-.battle-modal-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .battle-modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 600px; /* Increased width to accommodate the new layout */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .character-columns {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .select-column {
-    margin-right: 20px;
-  }
-  
-  .select-column h3 {
-    text-align: center; 
-  }
-  
-  .select-column select {
-    width: 200px; 
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .fight-button {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .fight-button button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .text-field {
-    overflow-y: auto;
-  }
-  
-  .text-field textarea {
-    width: 95%;
-    height: 250px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
+@font-face {
+  font-family: 'upheavtt';
+  src: url('../assets/font/upheavtt.ttf') format('truetype');
+}
 
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  .close-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .close-button:hover {
-    color: red;
-  }
+.battle-modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.battle-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  border: 5px solid black;
+  text-align: center;
+}
+
+.character-columns {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.select-column {
+  margin-right: 20px;
+}
+
+.select-column h3 {
+  text-align: center; 
+}
+
+.select-column select {
+  width: 200px; 
+  padding: 10px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  font-family: 'upheavtt', sans-serif;
+  background-color: #9bd59e;
+}
+
+.fight-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.fight-button button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fight-button button:hover {
+  background-color: #45a049;
+}
+
+.text-field {
+  overflow-y: auto;
+}
+
+.text-field textarea {
+  width: 95%;
+  height: 250px;
+  padding: 10px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  font-family: 'upheavtt', sans-serif;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.modal-title {
+  font-size: 36px;
+  transform: translateY(-35px);
+}
+
+.close-button {
+  margin-left: auto; 
+}
+
+.close-button {
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.close-button:hover {
+  color: red;
+}

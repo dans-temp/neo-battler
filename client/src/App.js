@@ -1,8 +1,11 @@
+// App.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import InfoModal from './components/InfoModal';
 import BattleModal from './components/BattleModal';
+import CharacterStats from './components/CharacterStats';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -78,61 +81,61 @@ function App() {
     }
   };
 
+  // Handle character info modal 
+  const openInfoModal = (character) => {
+    setSelectedCharacter(character);
+  };
 
-    // Handle character info modal 
-    const openInfoModal = (character) => {
-      setSelectedCharacter(character);
-    };
+  const closeInfoModal = () => {
+    setSelectedCharacter(null);
+  };
 
-    const closeInfoModal = () => {
-      setSelectedCharacter(null);
-    };
+  // Handle BattleModal
+  const openBattleModal = () => {
+    setShowBattleModal(true);
+  };
 
-    // Handle BattleModal
-    const openBattleModal = () => {
-      setShowBattleModal(true);
-    };
-
-    const closeBattleModal = () => {
-      setShowBattleModal(false);
-    };
+  const closeBattleModal = () => {
+    setShowBattleModal(false);
+  };
 
   return (
     <div>
+      <div className="main-title">Neo Battler</div>
+      <div className="sub-title">Create Character:</div>
+
       <div>
-        <h1>Neo Battler</h1>
-        <h1>Create Character:</h1>
-
-        <div>
-          <h1>Select Job:</h1>
-          <div className="job-cards">
-            {jobData && Object.keys(jobData).map((jobType, index) => (
-              <Card
-                key={index}
-                title={jobType.charAt(0).toUpperCase() + jobType.slice(1)} // Capitalize the job title
-                selected={selectedJob === jobType}
-                onClick={() => handleCardSelect(jobType)}
-                stats={jobData[jobType]}
-              />
-            ))}
-          </div>
+        <h2>Select Job:</h2>
+        <div className="job-cards">
+          {jobData && Object.keys(jobData).map((jobType, index) => (
+            <Card
+              key={index}
+              title={jobType.charAt(0).toUpperCase() + jobType.slice(1)} // Capitalize the job title
+              selected={selectedJob === jobType}
+              onClick={() => handleCardSelect(jobType)}
+              stats={jobData[jobType]}
+            />
+          ))}
         </div>
+      </div>
 
-        <div>
-          <input
-            type="text"
-            placeholder="Enter name"
-            value={nameInput}
-            onChange={handleInputChange}
-          />
-          <button onClick={createCharacter}>Create</button>
-        </div>
+      <div className="name-input">
+        <input
+          type="text"
+          placeholder="Enter name"
+          value={nameInput}
+          onChange={handleInputChange}
+        />
+        <button onClick={createCharacter}>Create</button>
+      </div>
+      <div className="messages">
         {errorMessage && <p className="error">{errorMessage}</p>}
         <p>{message}</p>
       </div>
 
+     {characterList.length > 0 &&
       <div>
-        <h1>Character List:</h1>
+        <h2>Character List:</h2>
         <table className="character-table">
           <thead>
             <tr>
@@ -148,14 +151,14 @@ function App() {
                 <td>{character.name}</td>
                 <td>{character.job}</td>
                 <td>{character.current_hp} / {character.max_hp}</td>
-                <td>{character.current_hp > 0 ? 'Alive' : 'Dead'}</td>
+                {character.current_hp > 0 ? <td className='green-text'>Alive</td> : <td className='red-text'>Dead</td>}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      
-      <div>
+      }
+      <div className="battle-section">
         <button onClick={openBattleModal}>Battle Menu</button>
       </div>
 
@@ -174,13 +177,8 @@ const Card = ({ title, selected, stats, onClick }) => {
       className={`card ${selected ? 'selected' : ''}`}
       onClick={onClick}
     >
-      <h3>{title}</h3>
-      <div className="stats">
-        <p>HP: {stats.hp}</p>
-        <p>Strength: {stats.strength}</p>
-        <p>Dexterity: {stats.dexterity}</p>
-        <p>Intelligence: {stats.intelligence}</p>
-      </div>
+      <h1>{title}</h1>
+      <CharacterStats character={stats}/>
     </div>
   );
 };

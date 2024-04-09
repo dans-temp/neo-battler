@@ -44,9 +44,10 @@ const BattleModal = ({ characterList, onClose }) => {
     <div className="battle-modal-background" onClick={onClose}>
       <div className="battle-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Battle Menu</h2>
+          <h2></h2>
           <button className="close-button" onClick={onClose}>x</button>
         </div>
+        <div className="modal-title">Battle Menu</div>
         {characterList.length < 2 ? (
           <div className="not-enough-characters">
             <p>Not enough characters to battle. You must have at least 2 characters to battle. Create more characters.</p>
@@ -55,10 +56,11 @@ const BattleModal = ({ characterList, onClose }) => {
           <div>
             <div className="character-columns">
               <div className="select-column">
-                <h3>Character 1:</h3>
+                <h3>Character 1 :</h3>
                 <select
                   value={selectedCharacter1}
                   onChange={(e) => setSelectedCharacter1(e.target.value)}
+                  className="custom-select"
                 >
                   {characterList.map((character, index) => (
                     <option key={index} value={character.name}>{character.name}</option>
@@ -66,10 +68,11 @@ const BattleModal = ({ characterList, onClose }) => {
                 </select>
               </div>
               <div className="select-column">
-                <h3>Character 2:</h3>
+                <h3>Character 2 :</h3>
                 <select
                   value={selectedCharacter2}
                   onChange={(e) => setSelectedCharacter2(e.target.value)}
+                  className="custom-select"
                 >
                   {characterList.map((character, index) => (
                     <option key={index} value={character.name}>{character.name}</option>

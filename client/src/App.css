@@ -1,48 +1,162 @@
 /* App.css */
-.App {
-  text-align: center;
+
+
+@font-face {
+  font-family: 'upheavtt';
+  src: url('assets/font/upheavtt.ttf') format('truetype');
 }
 
-.card {
-  border: 1px solid black;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100px;
-  text-align: center;
-}
-
-.card.selected {
-  border: 2px solid blue;
+body {
+  font-family: 'upheavtt', sans-serif;
+  margin: 0;
+  padding: 0;
   background-color: #f0f0f0;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  margin-top: 20px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+}
+
+button {
+  font-family: 'upheavtt', sans-serif;
+  font-size: 18px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.main-title {
+  text-align: center;
+  font-size: 100px;
+  background-color: black;
+  color: white;
+}
+
+.sub-title {
+  text-align: center;
+  font-size: 60px;
+  border-bottom: 2px black;
 }
 
 .job-cards {
   display: flex;
-  justify-content: space-around;
+  justify-content: center; 
+  align-items: center; 
+  flex-wrap: wrap; 
+}
+
+.card {
+  border: 5px solid #000;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 400px; 
+  text-align: center;
+  margin: 20px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.selected {
+  border: 5px solid #4CAF50;
+  background-color: #62df66;
+}
+
+.character-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.character-table th, .character-table td {
+  border: 3px solid #000;
+  padding: 15px;
+  text-align: center;
+}
+
+.character-table td {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.character-table tr:hover {
+  background-color: #4CAF50;
+}
+
+.character-table tr:hover .green-text{
+  color: black;
+}
+
+
+.character-table th {
+  background-color: #62df66;
+  font-size: 32px;
 }
 
 .error {
   color: red;
 }
 
-
-.character-table {
-  width: 100%;
-  border-collapse: collapse;
+.name-input {
+  text-align: center;
+  height: 45px;
 }
 
-.character-table th, .character-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.name-input input {
+  height: 45px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  font-family: 'upheavtt', sans-serif;
 }
 
-.character-table th {
-  background-color: #f2f2f2;
+.name-input button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
-.character-table tr:hover {
-  background-color: #ddd;
-  cursor: pointer;
+.battle-section {
+  text-align: center;
+  padding: 50px;
+}
+
+.messages {
+  text-align: center;
+  min-height: 20px;
+}
+
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: #62df66;
+}
+
+.pixel-icon {
+  height: 30px;
+  transform: translateY(6px);
+  padding-right: 10px;
 }

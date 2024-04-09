@@ -16,4 +16,10 @@ npm start
 # THE CLIENT IS NOW RUNNING ON PORT 3000
 
 
+# RUN TEST
+Stop the server and make sure you are in client/server
+npx jest
+
+
+
 # PROJECT MADE BY DANIEL GORESHT

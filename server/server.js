@@ -13,6 +13,35 @@ app.use(bodyParser.json());
 // Get job data from JSON file
 const jobData = JSON.parse(fs.readFileSync('job_data.json', 'utf-8'));
 
+//calc damage and speed modifier for each job and add to json
+for (const job in jobData) 
+{
+    const character_stats = jobData[job];
+    let damage;
+    let speed;
+    
+    if (job === "warrior")
+    {
+        damage = (character_stats.strength *.8) + (character_stats.dexterity * .2);
+        speed = (character_stats.dexterity *.6) + (character_stats.intelligence *.2);
+    }
+
+    if (job === "thief")
+    {
+        damage = (character_stats.strength * .25) + (character_stats.dexterity) + (character_stats.intelligence * .25);
+        speed = (character_stats.dexterity * .8);
+    }
+
+    else if (job === "mage")
+    {
+        damage = (character_stats.strength * .2) + (character_stats.dexterity * .2) + (character_stats.intelligence * 1.2);
+        speed = (character_stats.dexterity * .4) + (character_stats.strength * .1);
+    }
+        
+    jobData[job].damage = damage;
+    jobData[job].speed = speed;
+}
+
 const game_state = {
     characters: []
 };
@@ -81,7 +110,9 @@ app.post('/api/create/:job/:name', (req, res) => {
         max_hp: jobData[job].hp,
         strength: jobData[job].strength,
         dexterity: jobData[job].dexterity,
-        intelligence: jobData[job].intelligence
+        intelligence: jobData[job].intelligence,
+        damage: jobData[job].damage,
+        speed: jobData[job].speed
     }
 
     game_state.characters.push(new_character)
@@ -111,15 +142,15 @@ app.post('/api/battle/:character1/:character2', (req, res) => {
     //handle special cases where at least one character is dead before battle
     if (character1_hp === 0 && character2_hp === 0)
     {
-        logs = [`Battle between ${character1} (${game_state.characters[character1_index].job}) | ${character1_hp} HP, and ${character2} (${game_state.characters[character1_index].job}) | ${character2_hp} HP BEGINS!\n${character1} and ${character2} are both dead before the battle starts.\nThey lie on the battlefield lifelessly... \nThe battle ends in a draw!`];
+        logs = [`Battle between ${character1} (${game_state.characters[character1_index].job}) | ${character1_hp} HP, and ${character2} (${game_state.characters[character1_index].job}) | ${character2_hp} HP BEGINS!\n\n${character1} and ${character2} are both dead before the battle starts.\n\nThey lie on the battlefield lifelessly... \n\nThe battle ends in a draw!\n`];
     }
     else if (character1_hp === 0)
     {
-        logs = [`Battle between ${character1} (${game_state.characters[character1_index].job}) | ${character1_hp} HP, and ${character2} (${game_state.characters[character1_index].job}) | ${character2_hp} HP BEGINS!\n${character1} is dead before the battle starts.\n${character2}'s speed was faster than ${character1}'s speed and will begin this round!\n${character2} pokes the corpse of ${character1}\n${character1} lies on the battlefield lifelessly...\n${character2} wins the battle! ${character2} still has ${character2_hp} HP remaining!`];
+        logs = [`Battle between ${character1} (${game_state.characters[character1_index].job}) | ${character1_hp} HP, and ${character2} (${game_state.characters[character1_index].job}) | ${character2_hp} HP BEGINS!\n\n${character1} is dead before the battle starts.\n\n${character2}'s speed was faster than ${character1}'s speed and will begin this round!\n\n${character2} pokes the corpse of ${character1}\n\n${character1} lies on the battlefield lifelessly...\n\n${character2} wins the battle! ${character2} still has ${character2_hp} HP remaining!\n`];
     }
     else if (character2_hp === 0)
     {
-        logs = [`Battle between ${character1} (${game_state.characters[character1_index].job}) | ${character1_hp} HP, and ${character2} (${game_state.characters[character1_index].job}) | ${character2_hp} HP BEGINS!\n${character2} is dead before the battle starts.\n${character1}'s speed was faster than ${character2}'s speed and will begin this round!\n${character1} pokes the corpse of ${character2}\n${character2} lies on the battlefield lifelessly...\n${character1} wins the battle! ${character1} still has ${character1_hp} HP remaining!`];
+        logs = [`Battle between ${character1} (${game_state.characters[character1_index].job}) | ${character1_hp} HP, and ${character2} (${game_state.characters[character1_index].job}) | ${character2_hp} HP BEGINS!\n\n${character2} is dead before the battle starts.\n\n${character1}'s speed was faster than ${character2}'s speed and will begin this round!\n\n${character1} pokes the corpse of ${character2}\n\n${character2} lies on the battlefield lifelessly...\n\n${character1} wins the battle! ${character1} still has ${character1_hp} HP remaining!\n`];
     }
     else
         logs = battle(game_state.characters[character1_index], game_state.characters[character2_index]);
@@ -148,36 +179,12 @@ app.listen(PORT, () => {
 
 function calculateSpeed(character)
 {
-    let speed;
-    //calc speed modifier
-    if (character.job === "warrior")
-        speed = (character.dexterity *.6) + (character.intelligence *.2);
-
-    else if (character.job === "thief")
-        speed = (character.dexterity * .8);
-
-    else if (character.job === "mage")
-        speed = (character.dexterity * .4) + (character.strength * .1);
-
-    //return random number between 0 and speed
-    return Math.floor(Math.random() * speed);
+    return Math.floor(Math.random() * character.speed);
 }
 
 function calculateDamage(character)
 {
-    let damage;
-    //calc damage modifier
-    if (character.job === "warrior")
-        damage = (character.strength *.8) + (character.dexterity * .2);
-
-    else if (character.job === "thief")
-        damage = (character.strength * .25) + (character.dexterity) + (character.intelligence * .25);
-
-    else if (character.job === "mage")
-        damage = (character.strength * .2) + (character.dexterity * .2) + (character.intelligence * 1.2);
-    
-    //return random number between 0 and damage
-    return Math.ceil(Math.random() * damage);
+    return Math.ceil(Math.random() * character.damage);
 }
 
 //called to start the battle between two characters
@@ -195,16 +202,16 @@ function battle(character1, character2)
             is_winner = true;
         }
         
-        battle_logs.push(`${attacker.name} attacks ${defender.name} for ${attacker_atk_damage}!  ${defender.name} has ${defender.current_hp} HP remaining.`);
+        battle_logs.push(`${attacker.name} attacks ${defender.name} for ${attacker_atk_damage}!  ${defender.name} has ${defender.current_hp} HP remaining.\n`);
 
         if(is_winner)
-            battle_logs.push(`${attacker.name} wins the battle! ${attacker.name} still has ${attacker.current_hp} HP remaining!`);
+            battle_logs.push(`${attacker.name} wins the battle! ${attacker.name} still has ${attacker.current_hp} HP remaining!\n`);
 
     }
     const battle_logs = [];
     let is_winner = false;
 
-    battle_logs.push(`Battle between ${character1.name} (${character1.job}) | ${character1.current_hp} HP, and ${character2.name} (${character2.job}) | ${character2.current_hp} HP BEGINS!`);
+    battle_logs.push(`Battle between ${character1.name} (${character1.job}) | ${character1.current_hp} HP, and ${character2.name} (${character2.job}) | ${character2.current_hp} HP BEGINS!\n`);
     while (!is_winner)
     {
         let character1_speed = calculateSpeed(character1);
@@ -218,7 +225,7 @@ function battle(character1, character2)
 
         if (character1_speed > character2_speed)
         {
-            battle_logs.push(`${character1.name}'s ${character1_speed} speed was faster than ${character2.name}'s ${character2_speed} speed and will begin this round!`);
+            battle_logs.push(`${character1.name}'s ${character1_speed} speed was faster than ${character2.name}'s ${character2_speed} speed and will begin this round!\n`);
             process_combat(character1, character2);
 
             if(!is_winner)
@@ -227,7 +234,7 @@ function battle(character1, character2)
 
         else
         {
-            battle_logs.push(`${character2.name}'s ${character2_speed} speed was faster than ${character1.name}'s ${character1_speed} speed and will begin this round!`);
+            battle_logs.push(`${character2.name}'s ${character2_speed} speed was faster than ${character1.name}'s ${character1_speed} speed and will begin this round!\n`);
             process_combat(character2, character1);
             
             if(!is_winner)
@@ -238,3 +245,5 @@ function battle(character1, character2)
 
     return battle_logs;
 }
+
+module.exports = app;

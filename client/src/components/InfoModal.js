@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import './InfoModal.css';
 import axios from 'axios';
 
-const InfoModal = ({ character, characterList, onClose }) => {
+import CharacterStats from '../components/CharacterStats';
+
+const InfoModal = ({ character, characterList, onClose}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [editName, setEditName] = useState(false);
   const [newName, setNewName] = useState(character.name);
@@ -50,26 +52,24 @@ const InfoModal = ({ character, characterList, onClose }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h1>CHARACTER INFO</h1>      
         {editName ? (
-          <div>
+          <div className="name-input">
             <input
               type="text"
               value={newName}
               onChange={handleNameChange}
             />
             <button onClick={handleSaveName}>Save</button>
-            {errorMessage && <p className="error">{errorMessage}</p>}
+            <div className="error-text">
+              {errorMessage && <p className="error">{errorMessage}</p>}
+            </div>
           </div>
         ) : (
           <div>
             <h2>{character.name}</h2>
-            <button onClick={handleEditName}>Edit</button>
+            <button onClick={handleEditName}>Edit Name</button>
           </div>
         )}
-        <p>Job: {character.job}</p>
-        <p>HP: {character.current_hp} / {character.max_hp}</p>
-        <p>Strength: {character.strength}</p>
-        <p>Dexterity: {character.dexterity}</p>
-        <p>Intelligence: {character.intelligence}</p>
+        <CharacterStats character={character}/>
       </div>
     </div>
   );
